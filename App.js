@@ -3,13 +3,15 @@ import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-goog
   import { StyleSheet, Text, View ,Image,Dimensions,Button,Alert} from 'react-native';
   const screenHeight=Dimensions.get('window').height
   const screenWidth=Dimensions.get('window').width
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
   GoogleSignin.configure({
   scopes: ['https://www.googleapis.com/auth/spreadsheets'], // what API you want to access on behalf of the user, default is email and profile
 
   webClientId: '942044510576-kkoo8hdnm7gs0cn9705kbjggq80nfcs2.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
   offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-  forceConsentPrompt: true, // [Android] if you want to show the authorization prompt at each login.
+  forceConsentPrompt: false, // [Android] if you want to show the authorization prompt at each login.
 });
 
 signIn = async () => {
@@ -42,10 +44,12 @@ signIn = async () => {
 
 };
 
-
-
-  export default function App() {
-    return (
+class HomeScreen extends React.Component {
+  static navigationOptions = {
+        header: null
+    }
+  render() {
+     return (
       <View style={styles.container}>
         <Image source={require('./logo.png')} style={{width:screenWidth*0.9,resizeMode:'contain',position:'absolute',top:screenHeight/5}}/>
         <View style={{width: screenWidth/2, height:20, alignSelf:'center',position:'absolute',bottom:screenHeight*2.5/6}}>
@@ -53,11 +57,25 @@ signIn = async () => {
     style={{ width: 192, height: 48 }}
     size={GoogleSigninButton.Size.Wide}
     color={GoogleSigninButton.Color.Dark}
-    onPress={this.signIn} />
+    onPress={signIn} />
         </View>
       </View>
-    );
+  )}
+}
+
+const AppNavigator = createStackNavigator({
+  Home: {
+    screen: HomeScreen,
+  },
+});
+
+const AppContainer = createAppContainer(AppNavigator);
+
+export default class App extends React.Component {
+  render() {
+    return <AppContainer />;
   }
+}
 
 
   const styles = StyleSheet.create({
