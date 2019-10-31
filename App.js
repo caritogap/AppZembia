@@ -1,8 +1,48 @@
-import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
+import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
   import React from 'react';
-  import { StyleSheet, Text, View ,Image,Dimensions,Button} from 'react-native';
+  import { StyleSheet, Text, View ,Image,Dimensions,Button,Alert} from 'react-native';
   const screenHeight=Dimensions.get('window').height
   const screenWidth=Dimensions.get('window').width
+
+  GoogleSignin.configure({
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'], // what API you want to access on behalf of the user, default is email and profile
+
+  webClientId: '942044510576-kkoo8hdnm7gs0cn9705kbjggq80nfcs2.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+  offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+  forceConsentPrompt: true, // [Android] if you want to show the authorization prompt at each login.
+});
+
+signIn = async () => {
+  try {
+    await GoogleSignin.hasPlayServices();
+    const userInfo = await GoogleSignin.signIn();
+    this.setState({ userInfo });
+  } 
+  catch(error) {
+
+    if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+      // user cancelled the login flow
+    } 
+    else if (error.code === statusCodes.IN_PROGRESS) {
+      // operation (e.g. sign in) is in progress already
+      Alert.alert('2')
+    }
+     else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      // play services not available or outdated
+      Alert.alert('3')
+    }
+     else {
+      // some other error happened
+    }
+
+  }
+
+  await GoogleSignin.signIn();
+  var {accessToken} =  await GoogleSignin.getTokens();
+
+};
+
+
 
   export default function App() {
     return (
@@ -13,11 +53,12 @@ import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
     style={{ width: 192, height: 48 }}
     size={GoogleSigninButton.Size.Wide}
     color={GoogleSigninButton.Color.Dark}
-    onPress={this._signIn} />
+    onPress={this.signIn} />
         </View>
       </View>
     );
   }
+
 
   const styles = StyleSheet.create({
     container: {
