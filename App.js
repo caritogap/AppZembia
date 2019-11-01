@@ -3,8 +3,9 @@ import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-goog
   import { StyleSheet, Text, View ,Image,Dimensions,Button,Alert} from 'react-native';
   const screenHeight=Dimensions.get('window').height
   const screenWidth=Dimensions.get('window').width
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, withNavigation } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+
 
   GoogleSignin.configure({
   scopes: ['https://www.googleapis.com/auth/spreadsheets'], // what API you want to access on behalf of the user, default is email and profile
@@ -15,6 +16,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 });
 
 signIn = async () => {
+  
   try {
     await GoogleSignin.hasPlayServices();
     const userInfo = await GoogleSignin.signIn();
@@ -39,16 +41,25 @@ signIn = async () => {
 
   }
 
+
   await GoogleSignin.signIn();
+  
+
   var {accessToken} =  await GoogleSignin.getTokens();
+  await GoogleSignin.signOut()
 
 };
+
+
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
         header: null
     }
+
   render() {
+
+    checkSignin(this)
      return (
       <View style={styles.container}>
         <Image source={require('./logo.png')} style={{width:screenWidth*0.9,resizeMode:'contain',position:'absolute',top:screenHeight/5}}/>
@@ -57,24 +68,55 @@ class HomeScreen extends React.Component {
     style={{ width: 192, height: 48 }}
     size={GoogleSigninButton.Size.Wide}
     color={GoogleSigninButton.Color.Dark}
-    onPress={signIn} />
+    onPress={signIn}/>
         </View>
       </View>
   )}
 }
 
+
+class afterSignIn extends React.Component{
+
+  render(){
+    return(
+
+      <View>
+        <Text>User is Signed in </Text>
+       </View>
+
+
+      )
+  }
+
+}
+
+
 const AppNavigator = createStackNavigator({
-  Home: {
-    screen: HomeScreen,
-  },
-});
+  Home: HomeScreen,
+  afterSignIn:afterSignIn,
+},
+{
+    initialRouteName: 'Home',
+}
+);
 
 const AppContainer = createAppContainer(AppNavigator);
 
-export default class App extends React.Component {
-  render() {
-    return <AppContainer />;
+checkSignin = async (t) => {
+  Alert.alert('Hola!')
+  var s= await GoogleSignin.isSignedIn()
+  if(s==true){
+    t.props.navigation.navigate('afterSignIn')
+
   }
+
+}
+
+export default function App() 
+{
+    
+    return <AppContainer/>;
+
 }
 
 
