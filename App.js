@@ -15,8 +15,8 @@ import { createStackNavigator } from 'react-navigation-stack';
   forceConsentPrompt: false, // [Android] if you want to show the authorization prompt at each login.
 });
 
-signIn = async () => {
-  
+signIn = async (t) => {
+  await GoogleSignin.signOut()
   try {
     await GoogleSignin.hasPlayServices();
     const userInfo = await GoogleSignin.signIn();
@@ -41,13 +41,10 @@ signIn = async () => {
 
   }
 
-
-  await GoogleSignin.signIn();
-  
-
-  var {accessToken} =  await GoogleSignin.getTokens();
-  await GoogleSignin.signOut()
-
+  s=await GoogleSignin.isSignedIn()
+  if(s==true){
+    t.props.navigation.navigate('afterSignIn')
+  }
 };
 
 
@@ -58,8 +55,7 @@ class HomeScreen extends React.Component {
     }
 
   render() {
-
-    checkSignin(this)
+     checkSignin(this)
      return (
       <View style={styles.container}>
         <Image source={require('./logo.png')} style={{width:screenWidth*0.9,resizeMode:'contain',position:'absolute',top:screenHeight/5}}/>
@@ -68,7 +64,7 @@ class HomeScreen extends React.Component {
     style={{ width: 192, height: 48 }}
     size={GoogleSigninButton.Size.Wide}
     color={GoogleSigninButton.Color.Dark}
-    onPress={signIn}/>
+    onPress={()=> signIn(this)}/>
         </View>
       </View>
   )}
@@ -103,7 +99,6 @@ const AppNavigator = createStackNavigator({
 const AppContainer = createAppContainer(AppNavigator);
 
 checkSignin = async (t) => {
-  Alert.alert('Hola!')
   var s= await GoogleSignin.isSignedIn()
   if(s==true){
     t.props.navigation.navigate('afterSignIn')
