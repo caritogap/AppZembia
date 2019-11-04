@@ -7,6 +7,8 @@ import { createAppContainer} from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 const axios=require("axios")
 
+
+
   GoogleSignin.configure({   //Configuración de la libreria Google Sign in 
   scopes: ['https://www.googleapis.com/auth/spreadsheets'], // what API you want to access on behalf of the user, default is email and profile
 
@@ -50,12 +52,30 @@ signIn = async (t) => {   //Funcion Inicio de Sesión
 Token= async() => {  //Guarda el token de acceso en la variable window.accessToken
   Alert.alert('token')
   token= await GoogleSignin.getTokens()
+  console.log(token.accessToken)
   window.accessToken=token.accessToken
 
 }
 
 getData = async() =>{  //Funcion que lee los datos de la Spreadsheet
   await Token()
+  const instance=axios.create({
+  timeout: 1000,
+  headers: {'Authorization': 'Bearer '+window.accessToken}
+  })
+
+
+  instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'prueba!A1:A5', includeGridData:true }})
+  .then(response => {
+    v=response.data.sheets[0].data[0].rowData
+    
+    
+
+
+
+  })
+  
+
 }
 
 class HomeScreen extends React.Component {   //Defincion de la pantalla de inicio
