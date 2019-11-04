@@ -1,18 +1,22 @@
-import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
-  import React from 'react';
-  import { StyleSheet, Text, View ,Image,Dimensions,Button,Alert} from 'react-native';
-  const screenHeight=Dimensions.get('window').height
-  const screenWidth=Dimensions.get('window').width
+import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin'; //Libreria de Google Sign-in
+import React from 'react';
+import { StyleSheet, Text, View ,Image,Dimensions,Button,Alert} from 'react-native';
+const screenHeight=Dimensions.get('window').height //Te entrega la altura de la pantalla del dispositivo
+const screenWidth=Dimensions.get('window').width //Te entrega el ancho de la pantalla del dispositivo
+import { createAppContainer} from 'react-navigation'; 
+import { createStackNavigator } from 'react-navigation-stack';
+const axios=require("axios")
 
-  GoogleSignin.configure({
+  GoogleSignin.configure({   //Configuración de la libreria Google Sign in 
   scopes: ['https://www.googleapis.com/auth/spreadsheets'], // what API you want to access on behalf of the user, default is email and profile
 
   webClientId: '942044510576-kkoo8hdnm7gs0cn9705kbjggq80nfcs2.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
   offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-  forceConsentPrompt: true, // [Android] if you want to show the authorization prompt at each login.
+  forceConsentPrompt: false, // [Android] if you want to show the authorization prompt at each login.
 });
 
-signIn = async () => {
+signIn = async (t) => {   //Funcion Inicio de Sesión
+  await GoogleSignin.signOut()
   try {
     await GoogleSignin.hasPlayServices();
     const userInfo = await GoogleSignin.signIn();
@@ -37,15 +41,31 @@ signIn = async () => {
 
   }
 
-  await GoogleSignin.signIn();
-  var {accessToken} =  await GoogleSignin.getTokens();
-
+  s=await GoogleSignin.isSignedIn() //Verifica si el usuario esta conectado
+  if(s==true){
+    t.props.navigation.navigate('afterSignIn') //LLeva a la siguiente pantalla 
+  }
 };
 
+Token= async() => {  //Guarda el token de acceso en la variable window.accessToken
+  Alert.alert('token')
+  token= await GoogleSignin.getTokens()
+  window.accessToken=token.accessToken
 
+}
 
-  export default function App() {
-    return (
+getData = async() =>{  //Funcion que lee los datos de la Spreadsheet
+  await Token()
+}
+
+class HomeScreen extends React.Component {   //Defincion de la pantalla de inicio
+  static navigationOptions = {
+        header: null
+    }
+
+  render() {
+     checkSignin(this)
+     return (
       <View style={styles.container}>
         <Image source={require('./logo.png')} style={{width:screenWidth*0.9,resizeMode:'contain',position:'absolute',top:screenHeight/5}}/>
         <View style={{width: screenWidth/2, height:20, alignSelf:'center',position:'absolute',bottom:screenHeight*2.5/6}}>
@@ -53,11 +73,57 @@ signIn = async () => {
     style={{ width: 192, height: 48 }}
     size={GoogleSigninButton.Size.Wide}
     color={GoogleSigninButton.Color.Dark}
-    onPress={this.signIn} />
+    onPress={()=> signIn(this)}/>
         </View>
       </View>
-    );
+  )}
+}
+
+
+class afterSignIn extends React.Component{  //Definicion de la pantalla despues del incicio de sesion
+
+  render(){
+    
+    getData() 
+    return(
+
+      <View>
+        <Text>User is Signed in </Text>
+       </View>
+
+
+      )
   }
+
+}
+
+
+const AppNavigator = createStackNavigator({    //Aqui se definen las pantallas que tendra la aplicacion
+  Home: HomeScreen,
+  afterSignIn:afterSignIn,
+},
+{
+    initialRouteName: 'Home', //La App parte en Home
+}
+);
+
+const AppContainer = createAppContainer(AppNavigator);  //Crea un "contenedor" con todas las pantallas de la App
+
+checkSignin = async (t) => { //Verifica al principio si el usuario esta loggeado y lo lleva directamente a la siguiente pantalla
+  var s= await GoogleSignin.isSignedIn()
+  if(s==true){
+    t.props.navigation.navigate('afterSignIn')
+
+  }
+
+}
+
+export default function App() 
+{
+    
+    return <AppContainer/>;
+
+}
 
 
   const styles = StyleSheet.create({
