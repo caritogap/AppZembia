@@ -1,13 +1,13 @@
-import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
-  import React from 'react';
-  import { StyleSheet, Text, View ,Image,Dimensions,Button,Alert} from 'react-native';
-  const screenHeight=Dimensions.get('window').height
-  const screenWidth=Dimensions.get('window').width
-import { createAppContainer, withNavigation } from 'react-navigation';
+import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin'; //Libreria de Google Sign-in
+import React from 'react';
+import { StyleSheet, Text, View ,Image,Dimensions,Button,Alert} from 'react-native';
+const screenHeight=Dimensions.get('window').height //Te entrega la altura de la pantalla del dispositivo
+const screenWidth=Dimensions.get('window').width //Te entrega el ancho de la pantalla del dispositivo
+import { createAppContainer} from 'react-navigation'; 
 import { createStackNavigator } from 'react-navigation-stack';
+const axios=require("axios")
 
-
-  GoogleSignin.configure({
+  GoogleSignin.configure({   //Configuración de la libreria Google Sign in 
   scopes: ['https://www.googleapis.com/auth/spreadsheets'], // what API you want to access on behalf of the user, default is email and profile
 
   webClientId: '942044510576-kkoo8hdnm7gs0cn9705kbjggq80nfcs2.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
@@ -15,7 +15,7 @@ import { createStackNavigator } from 'react-navigation-stack';
   forceConsentPrompt: false, // [Android] if you want to show the authorization prompt at each login.
 });
 
-signIn = async (t) => {
+signIn = async (t) => {   //Funcion Inicio de Sesión
   await GoogleSignin.signOut()
   try {
     await GoogleSignin.hasPlayServices();
@@ -41,15 +41,24 @@ signIn = async (t) => {
 
   }
 
-  s=await GoogleSignin.isSignedIn()
+  s=await GoogleSignin.isSignedIn() //Verifica si el usuario esta conectado
   if(s==true){
-    t.props.navigation.navigate('afterSignIn')
+    t.props.navigation.navigate('afterSignIn') //LLeva a la siguiente pantalla 
   }
 };
 
+Token= async() => {  //Guarda el token de acceso en la variable window.accessToken
+  Alert.alert('token')
+  token= await GoogleSignin.getTokens()
+  window.accessToken=token.accessToken
 
+}
 
-class HomeScreen extends React.Component {
+getData = async() =>{  //Funcion que lee los datos de la Spreadsheet
+  await Token()
+}
+
+class HomeScreen extends React.Component {   //Defincion de la pantalla de inicio
   static navigationOptions = {
         header: null
     }
@@ -71,9 +80,11 @@ class HomeScreen extends React.Component {
 }
 
 
-class afterSignIn extends React.Component{
+class afterSignIn extends React.Component{  //Definicion de la pantalla despues del incicio de sesion
 
   render(){
+    
+    getData() 
     return(
 
       <View>
@@ -87,18 +98,18 @@ class afterSignIn extends React.Component{
 }
 
 
-const AppNavigator = createStackNavigator({
+const AppNavigator = createStackNavigator({    //Aqui se definen las pantallas que tendra la aplicacion
   Home: HomeScreen,
   afterSignIn:afterSignIn,
 },
 {
-    initialRouteName: 'Home',
+    initialRouteName: 'Home', //La App parte en Home
 }
 );
 
-const AppContainer = createAppContainer(AppNavigator);
+const AppContainer = createAppContainer(AppNavigator);  //Crea un "contenedor" con todas las pantallas de la App
 
-checkSignin = async (t) => {
+checkSignin = async (t) => { //Verifica al principio si el usuario esta loggeado y lo lleva directamente a la siguiente pantalla
   var s= await GoogleSignin.isSignedIn()
   if(s==true){
     t.props.navigation.navigate('afterSignIn')
