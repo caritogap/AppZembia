@@ -23,6 +23,8 @@ signIn = async (t) => {   //Funcion Inicio de Sesión
     await GoogleSignin.hasPlayServices();
     const userInfo = await GoogleSignin.signIn();
     this.setState({ userInfo });
+
+
   } 
   catch(error) {
 
@@ -63,17 +65,18 @@ getData = async() =>{  //Funcion que lee los datos de la Spreadsheet
   timeout: 1000,
   headers: {'Authorization': 'Bearer '+window.accessToken}
   })
+  
 
 
-  instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'prueba!A1:A5', includeGridData:true }})
+  /*instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'prueba!A1:A5', includeGridData:true }})
   .then(response => {
-    v=response.data.sheets[0].data[0].rowData
+    v=response.data.sheets[0].data[0].rowData*/
     
     
 
 
 
-  })
+ // })
   
 
 }
@@ -84,6 +87,7 @@ class HomeScreen extends React.Component {   //Defincion de la pantalla de inici
     }
 
   render() {
+     
      checkSignin(this)
      return (
       <View style={styles.container}>
@@ -103,12 +107,11 @@ class HomeScreen extends React.Component {   //Defincion de la pantalla de inici
 class afterSignIn extends React.Component{  //Definicion de la pantalla despues del incicio de sesion
 
   render(){
-    
-    getData() 
+    getData()
     return(
 
       <View>
-        <Text>User is Signed in </Text>
+        <Text></Text>
        </View>
 
 
