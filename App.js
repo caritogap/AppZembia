@@ -2,16 +2,8 @@ import { GoogleSignin } from 'react-native-google-signin'; //Libreria de Google 
 import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-
-<<<<<<< HEAD
-
-
-  GoogleSignin.configure({   //Configuración de la libreria Google Sign in 
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'], // what API you want to access on behalf of the user, default is email and profile
-=======
 import { HomeScreen } from './src/screens/HomeScreen';
 import { LoginScreen } from './src/screens/LoginScreen';
->>>>>>> faa3cd518598a0734c52c12cd04a3cfdaa177dfd
 
 GoogleSignin.configure({
   //Configuración de la libreria Google Sign in
@@ -53,15 +45,6 @@ getData = async() =>{  //Funcion que lee los datos de la Spreadsheet
 //}
 
 
-
-const AppNavigator = createStackNavigator({    //Aqui se definen las pantallas que tendra la aplicacion
-  Home: HomeScreen,
-  afterSignIn:afterSignIn,
-},
-{
-    initialRouteName: 'Home', //La App parte en Home
-}
-=======
 const AppNavigator = createStackNavigator(
   {
     Login: LoginScreen,
@@ -70,7 +53,6 @@ const AppNavigator = createStackNavigator(
   {
     initialRouteName: 'Login'
   }
->>>>>>> faa3cd518598a0734c52c12cd04a3cfdaa177dfd
 );
 
 const AppContainer = createAppContainer(AppNavigator); //Crea un "contenedor" con todas las pantallas de la App
