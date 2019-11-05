@@ -1,38 +1,90 @@
 import React from 'react'
-import{View, Image, Text, Button} from 'react-native'
+import{View, 
+  Image, 
+  Text, 
+  Button, 
+  StyleSheet, 
+  ScrollView,
+  TouchableOpacity} from 'react-native'
 
+const logoZembia = require('./../img/logo.png');
 
-class HomeScreen extends React.Component{  //Definicion de la pantalla despues del incicio de sesion
+class HomeScreen extends React.Component {  //Definicion de la pantalla despues del incicio de sesion
 
-  render(){
-    
-      return(
-        <View style ={{flex:1}}>
-          <View style ={{flex: 1,backgroundColor: '#c03c22'}}>
-            <Image source={require('./../../logo.png')} style={{width: 180, height: 70,alignSelf: 'center',}} />
-          </View>  
-          <View style ={{flex: 2,backgroundColor: '#22f705'}}>
-            <Text> 
-              
-            </Text>
-           </View> 
+  static navigationOptions = {
+    title: 'Home',
+  };
 
-          <View style ={{flex: 2,backgroundColor: '#0509f7'}}>
-            <Text>FFFFF</Text>
-            <Button 
-              title = "press me"
-            />
-
-          </View> 
-          <View style ={{flex: 2,backgroundColor: '#c03c22'}}>
-            <Text>FFFFF</Text>
-          <Button 
-              title = "press me"
-            />
-          </View>  
-        </View>
-      )
-    } 
+  constructor(props) {
+    super(props);
+    this.userInfo = this.props.navigation.getParam('userInfo', null);
+    console.log('this.userInfo', this.userInfo);
   }
 
-  export {HomeScreen};
+  render() {
+    const { email, name } = this.userInfo;
+    
+    return(
+      <View style ={{flex:1}}>
+        <View style = {{flex: 1,backgroundColor: '#c03c22'}}>
+          <Text style = {styles.textWelcome}>
+            Welcome {name} !
+          </Text>
+          <Text>
+            {email}
+          </Text>
+        </View> 
+
+        <View style ={{flex: 6,backgroundColor: '#ffffff'}}>
+          <ScrollView>
+
+            <TouchableOpacity
+              onPress = {()=> this.props.navigation.navigate('expenseMenu')}>
+              <View style = {styles.viewList}>
+                <Text style = {styles.textList}>
+                  Ingresar Gastos
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View style = {styles.viewList}>
+                <Text style = {styles.textList}>
+                  Ingresar ..
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View style = {styles.viewList}>
+                <Text style = {styles.textList}>
+                  Ingresar ..
+                </Text>
+              </View>
+            </TouchableOpacity>   
+
+          </ScrollView>
+        </View>  
+      </View>
+    )
+  } 
+}
+
+const styles = StyleSheet.create({
+  textWelcome: {
+    fontWeight: 'bold',
+    color: '#ffffff',
+    textAlign: 'center',
+    fontSize: 25,
+  },
+  textList:{
+    color: '#000000',
+    fontSize: 20,
+  },
+  viewList:{
+    width: 360, 
+    height: 40,
+  },
+});
+
+export { HomeScreen };
+
+
