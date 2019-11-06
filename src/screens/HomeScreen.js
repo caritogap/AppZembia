@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 
 class HomeScreen extends React.Component {
   //Definicion de la pantalla despues del incicio de sesion
@@ -9,7 +10,10 @@ class HomeScreen extends React.Component {
     this.userInfo = this.props.navigation.getParam('userInfo', null);
     console.log('this.userInfo', this.userInfo);
   }
+  componentDidMount(){
+    SplashScreen.hide();
 
+  }
   render() {
     const { email, name } = this.userInfo;
 

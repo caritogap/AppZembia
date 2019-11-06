@@ -5,7 +5,7 @@ import {
   statusCodes
 } from 'react-native-google-signin';
 import { Alert, View, Image, StyleSheet, Dimensions } from 'react-native';
-
+import SplashScreen from 'react-native-splash-screen';
 const screenHeight = Dimensions.get('window').height; //Te entrega la altura de la pantalla del dispositivo
 const screenWidth = Dimensions.get('window').width; //Te entrega el ancho de la pantalla del dispositivo
 const logoZembia = require('./../img/logo.png');
@@ -27,6 +27,10 @@ class LoginScreen extends React.Component {
     const userInfo = await this.getCurrentUser();
     if (userInfo !== null) {
       this.checkSignIn(userInfo.user);
+    }
+    else{
+      SplashScreen.hide()
+
     }
   }
 
