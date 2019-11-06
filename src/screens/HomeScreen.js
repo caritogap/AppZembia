@@ -1,8 +1,9 @@
-import React from 'react'
 import {
   GoogleSignin,
   statusCodes
   } from 'react-native-google-signin';
+import React from 'react';
+import SplashScreen from 'react-native-splash-screen';
 import{View, 
   Image, 
   Text, 
@@ -35,6 +36,10 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
       console.error(error);
     }
   };
+
+  componentDidMount(){
+    SplashScreen.hide();
+}
 
   render() {
     console.log('userInfo in render()', this.userInfo)
