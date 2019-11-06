@@ -39,7 +39,7 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
 
   componentDidMount(){
     SplashScreen.hide();
-}
+  }
 
   render() {
     console.log('userInfo in render()', this.userInfo)
@@ -48,7 +48,7 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
     return(
       <View style ={{flex:1}}>
         <View style = {{flex: 1,backgroundColor: '#c03c22'}}>
-          <Button
+          <Button style ={ styles.signOutButton}
             title = 'Sign Out'
             onPress={this.signOut}
           />
@@ -108,6 +108,9 @@ const styles = StyleSheet.create({
     width: 360, 
     height: 40,
   },
+  signOutButton:{
+    
+  }
 });
 
 export { HomeScreen };
