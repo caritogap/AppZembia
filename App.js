@@ -6,6 +6,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { expenseMenuScreen } from './src/screens/expenseMenuScreen';
+import { LoadingScreen } from './src/screens/LoadingScreen';
 import { mapping, light as lightTheme } from '@eva-design/eva';
 import { ApplicationProvider, Layout, Text } from 'react-native-ui-kitten';
 
@@ -42,6 +43,7 @@ const AppNavigator = createStackNavigator(
     Login: LoginScreen,
     Home: HomeScreen,
     expenseMenu: expenseMenuScreen,
+    Loading: LoadingScreen,
   },
   {
     initialRouteName: 'Login',

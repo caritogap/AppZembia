@@ -64,7 +64,7 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
           <ScrollView>
 
             <TouchableOpacity
-              onPress = {()=> this.props.navigation.navigate('expenseMenu')}>
+              onPress = {()=> this.props.navigation.navigate('Loading')}>
               <View style = {styles.viewList}>
                 <Text style = {styles.textList}>
                   Ingresar Gastos
