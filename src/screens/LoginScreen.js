@@ -18,7 +18,6 @@ class LoginScreen extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.signIn = this.signIn.bind(this);
     this.checkSignIn = this.checkSignIn.bind(this);
   }

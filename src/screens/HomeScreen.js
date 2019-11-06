@@ -1,4 +1,8 @@
 import React from 'react'
+import {
+  GoogleSignin,
+  statusCodes
+  } from 'react-native-google-signin';
 import{View, 
   Image, 
   Text, 
@@ -18,15 +22,31 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
   constructor(props) {
     super(props);
     this.userInfo = this.props.navigation.getParam('userInfo', null);
+    this.signOut = this.signOut.bind(this);
     console.log('this.userInfo', this.userInfo);
   }
+  
+  async signOut() {
+    try {
+      await GoogleSignin.signOut();
+      this.setState({ user: null }); // Remember to remove the user from your app's state as well
+      this.props.navigation.navigate('Login');
+      } catch (error) {
+      console.error(error);
+    }
+  };
 
   render() {
-    const { email, name } = this.userInfo;
-    
+    console.log('userInfo in render()', this.userInfo)
+    var name=this.userInfo.name
+    var email=this.userInfo.email
     return(
       <View style ={{flex:1}}>
         <View style = {{flex: 1,backgroundColor: '#c03c22'}}>
+          <Button
+            title = 'Sign Out'
+            onPress={this.signOut}
+          />
           <Text style = {styles.textWelcome}>
             Welcome {name} !
           </Text>
@@ -86,5 +106,3 @@ const styles = StyleSheet.create({
 });
 
 export { HomeScreen };
-
-
