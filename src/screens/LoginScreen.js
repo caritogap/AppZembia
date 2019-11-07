@@ -35,7 +35,6 @@ class LoginScreen extends React.Component {
 
   async signIn() {
     //Funcion Inicio de Sesión
-    await GoogleSignin.signOut();
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();

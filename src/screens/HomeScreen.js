@@ -24,7 +24,6 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
     super(props);
     this.userInfo = this.props.navigation.getParam('userInfo', null);
     this.signOut = this.signOut.bind(this);
-    console.log('this.userInfo', this.userInfo);
   }
   
   async signOut() {
@@ -83,7 +82,7 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
         <View style ={{flex: 4,backgroundColor: '#fff3a6'}}> 
           <ScrollView>
             <TouchableOpacity
-              onPress = {()=> this.props.navigation.navigate('expenseMenu')}>
+              onPress = {()=> this.props.navigation.navigate('Loading')}>
               <View style = {styles.viewList}>
                 <Text style = {styles.textList}>
                   Ingresar Gastos

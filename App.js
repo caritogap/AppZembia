@@ -6,6 +6,9 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { expenseMenuScreen } from './src/screens/expenseMenuScreen';
+import { LoadingScreen } from './src/screens/LoadingScreen';
+import { mapping, light as lightTheme } from '@eva-design/eva';
+import { ApplicationProvider, Layout, Text } from 'react-native-ui-kitten';
 
 GoogleSignin.configure({
   //Configuración de la libreria Google Sign in
@@ -40,6 +43,7 @@ const AppNavigator = createStackNavigator(
     Login: LoginScreen,
     Home: HomeScreen,
     expenseMenu: expenseMenuScreen,
+    Loading: LoadingScreen,
   },
   {
     initialRouteName: 'Login',
@@ -59,4 +63,12 @@ const AppNavigator = createStackNavigator(
 
 const AppContainer = createAppContainer(AppNavigator); //Crea un "contenedor" con todas las pantallas de la App
 
-export default AppContainer;
+const App=() => {
+  return(
+  <ApplicationProvider mapping={mapping} theme={lightTheme}>
+    <AppContainer/>
+  </ApplicationProvider>
+  )
+}
+
+export default App;

@@ -8,8 +8,13 @@ class expenseMenuScreen extends React.Component {
   static navigationOptions = {
     title: 'Expense Menú',
   };
+  constructor(props){
+  	super(props)
+  }
+
 	render(){
 		return(
+
 			<View style = {{flex:1,backgroundColor: '#fff3a6'}}>
 
 				{/*CONTAINER*/}
@@ -28,7 +33,7 @@ class expenseMenuScreen extends React.Component {
 					</View>
 
 				</View>
-			
+
 			</View>
 		)
 	}
