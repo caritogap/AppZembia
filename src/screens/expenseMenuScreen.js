@@ -9,9 +9,6 @@ class expenseMenuScreen extends React.Component {
   };
   constructor(props){
   	super(props)
-  	this.names = this.props.navigation.getParam('names', null);
-  	this.tipodoc= this.props.navigation.getParam('tipodoc', null)
-  	console.log('Nombres',this.names)
   }
 
 	render(){
