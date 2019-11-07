@@ -79,7 +79,7 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
         </View> 
 
         {/*PANTALLA DE LISTADO*/}
-        <View style ={{flex: 4,backgroundColor: '#fff3a6'}}> 
+        <View style ={{flex: 4,backgroundColor: '#c03c22',alignItems: 'center',}}> 
           <ScrollView>
             <TouchableOpacity
               onPress = {()=> this.props.navigation.navigate('Loading')}>
@@ -123,10 +123,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   viewList:{
-    width: 360, 
+    width: 300, 
     height: 40,
     borderWidth: 2,
-    borderColor: '#fff3a6',
+    borderColor: '#000000',
     backgroundColor:'#ffffff',
 
   },
