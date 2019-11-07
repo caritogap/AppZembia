@@ -10,14 +10,32 @@ import{View,
   Button, 
   StyleSheet, 
   ScrollView,
-  TouchableOpacity} from 'react-native';
+  TouchableOpacity,
+  Alert,Dimensions} from 'react-native';
+import {
+  Icon,
+  List,
+  ListItem,
+} from 'react-native-ui-kitten';
+const screenHeight = Dimensions.get('window').height; //Te entrega la altura de la pantalla del dispositivo
+const screenWidth = Dimensions.get('window').width; //Te entrega el ancho de la pantalla del dispositivo
+/*const StarIcon = (style,) => (
+  <Icon name='star'/>
+);*/
+
 
 const logoZembia = require('./../img/logo.png');
 
 class HomeScreen extends React.Component {  //Definicion de la pantalla despues del incicio de sesion
 
   static navigationOptions = {
-    header: null,
+    headerLeft: null,
+    title: 'Home',    
+    headerLayoutPreset: 'center',
+    headerTitleStyle: { 
+        textAlign:"center", 
+        flex:1 
+    },
   };
 
   constructor(props) {
@@ -43,106 +61,36 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
   render() {
     var name=this.userInfo.name
     var email=this.userInfo.email
-    return(
-      <View style ={{flex:1}}>
 
-        {/*ENCABEZADO DE PANTALLA HOME*/}
-        <View style = {{flex: 1,backgroundColor: '#c03c22'}}>
+  return(
 
-          {/*WELCOME EN ENCABEZADO*/}
-          <View style = {{flex: 2, justifyContent:'center'}}>
-            <Text style = {styles.textWelcome}>
-              Welcome to Home, {name} !
-            </Text>
-          </View>
-
-          {/*PIES DEL ENCABEZADO*/}
-          <View style= {{flex:1,flexDirection:'row'}}>
-            
-            {/*INFO EN PIES DEL ENCABEZADO*/}
-            <View style = {styles.info}>
-              <Text style = {styles.infotext}>
-                LOGIN IN: {email}
-              </Text>
-            </View>
-
-            {/*BOTON SIGNOUT EN PIES DEL ENCABEZADO*/}
-            <View style = {styles.signOutButton}>
-              <Button 
-                title = 'Sign Out'
-                onPress={this.signOut}
-              />
-            </View>
-
-          </View>
-
-        </View> 
-
-        {/*PANTALLA DE LISTADO*/}
-        <View style ={{flex: 4,backgroundColor: '#fff3a6'}}> 
-          <ScrollView>
-            <TouchableOpacity
-              onPress = {()=> this.props.navigation.navigate('Loading')}>
-              <View style = {styles.viewList}>
-                <Text style = {styles.textList}>
-                  Ingresar Gastos
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style = {styles.viewList}>
-                <Text style = {styles.textList}>
-                  Ingresar ..
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style = {styles.viewList}>
-                <Text style = {styles.textList}>
-                  Ingresar ..
-                </Text>
-              </View>
-            </TouchableOpacity>   
-          </ScrollView>
-        </View>  
-      </View>
-    )
+              <ScrollView>
+                <ListItem
+                  title='Rendir Gastos'
+                  onPress={() => this.props.navigation.navigate('Loading')} Icon={this.icon}
+                />
+                <ListItem
+                  title='Opcion 2'
+                  onPress={()=>{Alert.alert('hola1')}}
+                />
+                <ListItem
+                  title='Cerrar Sesión'
+                  onPress={this.signOut}
+                />
+              </ScrollView>
+         )
   } 
 }
 
 const styles = StyleSheet.create({
-  textWelcome: {
-    fontWeight: 'bold',
-    color: '#ffffff',
-    textAlign: 'center',
-    fontSize: 25,
-  },
-  textList:{
-    color: '#000000',
-    fontSize: 20,
-    alignSelf: 'center',
-  },
-  viewList:{
-    width: 360, 
-    height: 40,
-    borderWidth: 2,
-    borderColor: '#fff3a6',
-    backgroundColor:'#ffffff',
+  container:{
 
-  },
-  signOutButton:{
-    width: 80, 
-    height: 50, 
-    
-  },
-  info:{
-    flex:2,
-
-  },
-  infotext:{
-    color: '#ffffff',
-    textAlign: 'center',
+    //flexDirection:'column',
+    /*alignItems: 'center',
+    justifyContent: 'center',*/
+    backgroundColor: '#c03c22',
   }
+
 });
 
 export { HomeScreen };
