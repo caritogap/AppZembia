@@ -18,25 +18,7 @@ GoogleSignin.configure({
   forceConsentPrompt: false // [Android] if you want to show the authorization prompt at each login.
 });
 
-/*Token= async() => {  //Guarda el token de acceso en la variable window.accessToken
-  Alert.alert('token')
-  token= await GoogleSignin.getTokens()
-  console.log(token.accessToken)
-  window.accessToken=token.accessToken
-}
 
-getData = async() =>{  //Funcion que lee los datos de la Spreadsheet
-  await Token()
-  const instance=axios.create({
-  timeout: 1000,
-  headers: {'Authorization': 'Bearer '+window.accessToken}
-  })
-
-/*instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'prueba!A1:A5', includeGridData:true }})
-  .then(response => {
-    v=response.data.sheets[0].data[0].rowData*/
- // })
-//}
 
 const AppNavigator = createStackNavigator(
   {
