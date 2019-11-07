@@ -24,7 +24,6 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
     super(props);
     this.userInfo = this.props.navigation.getParam('userInfo', null);
     this.signOut = this.signOut.bind(this);
-    console.log('this.userInfo', this.userInfo);
   }
   
   async signOut() {
@@ -42,7 +41,6 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
   }
 
   render() {
-    console.log('userInfo in render()', this.userInfo)
     var name=this.userInfo.name
     var email=this.userInfo.email
     return(
