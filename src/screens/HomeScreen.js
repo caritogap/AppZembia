@@ -10,14 +10,14 @@ import{View,
   Button, 
   StyleSheet, 
   ScrollView,
-  TouchableOpacity} from 'react-native'
+  TouchableOpacity} from 'react-native';
 
 const logoZembia = require('./../img/logo.png');
 
 class HomeScreen extends React.Component {  //Definicion de la pantalla despues del incicio de sesion
 
   static navigationOptions = {
-    title: 'Home',
+    header: null,
   };
 
   constructor(props) {
@@ -42,27 +42,46 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
   }
 
   render() {
-    console.log('userInfo in render()', this.userInfo)
     var name=this.userInfo.name
     var email=this.userInfo.email
     return(
       <View style ={{flex:1}}>
+
+        {/*ENCABEZADO DE PANTALLA HOME*/}
         <View style = {{flex: 1,backgroundColor: '#c03c22'}}>
-          <Button style ={ styles.signOutButton}
-            title = 'Sign Out'
-            onPress={this.signOut}
-          />
-          <Text style = {styles.textWelcome}>
-            Welcome {name} !
-          </Text>
-          <Text>
-            {email}
-          </Text>
+
+          {/*WELCOME EN ENCABEZADO*/}
+          <View style = {{flex: 2, justifyContent:'center'}}>
+            <Text style = {styles.textWelcome}>
+              Welcome to Home, {name} !
+            </Text>
+          </View>
+
+          {/*PIES DEL ENCABEZADO*/}
+          <View style= {{flex:1,flexDirection:'row'}}>
+            
+            {/*INFO EN PIES DEL ENCABEZADO*/}
+            <View style = {styles.info}>
+              <Text style = {styles.infotext}>
+                LOGIN IN: {email}
+              </Text>
+            </View>
+
+            {/*BOTON SIGNOUT EN PIES DEL ENCABEZADO*/}
+            <View style = {styles.signOutButton}>
+              <Button 
+                title = 'Sign Out'
+                onPress={this.signOut}
+              />
+            </View>
+
+          </View>
+
         </View> 
 
-        <View style ={{flex: 6,backgroundColor: '#ffffff'}}>
+        {/*PANTALLA DE LISTADO*/}
+        <View style ={{flex: 4,backgroundColor: '#fff3a6'}}> 
           <ScrollView>
-
             <TouchableOpacity
               onPress = {()=> this.props.navigation.navigate('expenseMenu')}>
               <View style = {styles.viewList}>
@@ -85,7 +104,6 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
                 </Text>
               </View>
             </TouchableOpacity>   
-
           </ScrollView>
         </View>  
       </View>
@@ -103,13 +121,28 @@ const styles = StyleSheet.create({
   textList:{
     color: '#000000',
     fontSize: 20,
+    alignSelf: 'center',
   },
   viewList:{
     width: 360, 
     height: 40,
+    borderWidth: 2,
+    borderColor: '#fff3a6',
+    backgroundColor:'#ffffff',
+
   },
   signOutButton:{
+    width: 80, 
+    height: 50, 
     
+  },
+  info:{
+    flex:2,
+
+  },
+  infotext:{
+    color: '#ffffff',
+    textAlign: 'center',
   }
 });
 
