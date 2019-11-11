@@ -91,7 +91,14 @@ async getData(filas){
   dataReady[0]=1
   check=dataReady.reduce((a, b) => a + b, 0)
   if(check===7){
-    this.props.navigation.navigate('expenseMenu',{nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores});;
+    this.props.navigation.navigate('expenseMenu', {
+      nombres: nombres, 
+      tipodoc: tipodoc, 
+      metodos: metodos, 
+      categorias: categorias, 
+      proyectos: proyectos, 
+      proveedores: proveedores
+    });
   }
 })
 
