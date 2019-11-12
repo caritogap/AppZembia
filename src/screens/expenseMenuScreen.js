@@ -31,7 +31,7 @@ class expenseMenuScreen extends React.Component {
     });
   }
 	render(){
-    
+ 
 		return(
 			<View style = {{flex:1,backgroundColor: '#c03c22',alignItems: 'center',}}>
 				<ScrollView>
@@ -41,9 +41,9 @@ class expenseMenuScreen extends React.Component {
 						<RNPickerSelect
 				            onValueChange={(value) => console.log(value)}
 				            items={[
-				                { label: 'Football', value: 'footbaaall' },
-				                { label: 'Baseball', value: 'basebaaall' },
-				                { label: 'Hockey', value: 'hockaaey' },
+				                { label: 'football', value: 'football' },
+				                { label: 'Basebaaall', value: 'baseball' },
+				                { label: 'Hockeaay', value: 'hockey' },
 			            	]}
 			        	/>
 					</View>
