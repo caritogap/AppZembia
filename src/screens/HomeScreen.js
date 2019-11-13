@@ -10,15 +10,31 @@ import{View,
   Button, 
   StyleSheet, 
   ScrollView,
-  TouchableOpacity} from 'react-native';
-
-const logoZembia = require('./../img/logo.png');
+  TouchableOpacity,
+  Alert,Dimensions} from 'react-native';
+import {
+  Icon,
+  List,
+  ListItem,
+} from 'react-native-ui-kitten';
+const screenHeight = Dimensions.get('window').height; //Te entrega la altura de la pantalla del dispositivo
+const screenWidth = Dimensions.get('window').width; //Te entrega el ancho de la pantalla del dispositivo
+/*const StarIcon = (style,) => (
+  <Icon name='star'/>
+);*/
 
 class HomeScreen extends React.Component {  //Definicion de la pantalla despues del incicio de sesion
 
   static navigationOptions = {
-    header: null,
-  };
+    headerLeft: null,
+    title: 'Home',    
+    headerLayoutPreset: 'center',
+    headerTitleStyle: { 
+        textAlign:"center", 
+        flex:1 
+    },
+  }
+
 
   constructor(props) {
     super(props);
@@ -32,7 +48,7 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
       this.setState({ user: null }); // Remember to remove the user from your app's state as well
       this.props.navigation.navigate('Login');
       } catch (error) {
-      console.error(error);
+      console.error(error);welcome
     }
   };
 
@@ -40,109 +56,35 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
     SplashScreen.hide();
   }
 
-  render() {
-    var name=this.userInfo.name
-    var email=this.userInfo.email
+  iconSimpleUsageShowcase(){
     return(
-      <View style ={{flex:1}}>
 
-        {/*ENCABEZADO DE PANTALLA HOME*/}
-        <View style = {{flex: 1,backgroundColor: '#c03c22'}}>
-
-          {/*WELCOME EN ENCABEZADO*/}
-          <View style = {{flex: 2, justifyContent:'center'}}>
-            <Text style = {styles.textWelcome}>
-              Welcome to Home, {name} !
-            </Text>
-          </View>
-
-          {/*PIES DEL ENCABEZADO*/}
-          <View style= {{flex:1,flexDirection:'row'}}>
-            
-            {/*INFO EN PIES DEL ENCABEZADO*/}
-            <View style = {styles.info}>
-              <Text style = {styles.infotext}>
-                LOGIN IN: {email}
-              </Text>
-            </View>
-
-            {/*BOTON SIGNOUT EN PIES DEL ENCABEZADO*/}
-            <View style = {styles.signOutButton}>
-              <Button 
-                title = 'Sign Out'
-                onPress={this.signOut}
-              />
-            </View>
-
-          </View>
-
-        </View> 
-
-        {/*PANTALLA DE LISTADO*/}
-        <View style ={{flex: 4,backgroundColor: '#c03c22',alignItems: 'center',}}> 
-          <ScrollView>
-            <TouchableOpacity
-              onPress = {()=> this.props.navigation.navigate('Loading')}>
-              <View style = {styles.viewList}>
-                <Text style = {styles.textList}>
-                  Ingresar Gastos
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style = {styles.viewList}>
-                <Text style = {styles.textList}>
-                  Ingresar ..
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style = {styles.viewList}>
-                <Text style = {styles.textList}>
-                  Ingresar ..
-                </Text>
-              </View>
-            </TouchableOpacity>   
-          </ScrollView>
-        </View>  
-      </View>
-    )
-  } 
-}
-
-const styles = StyleSheet.create({
-  textWelcome: {
-    fontWeight: 'bold',
-    color: '#ffffff',
-    textAlign: 'center',
-    fontSize: 25,
-  },
-  textList:{
-    color: '#000000',
-    fontSize: 20,
-    alignSelf: 'center',
-  },
-  viewList:{
-    width: 300, 
-    height: 40,
-    borderWidth: 2,
-    borderColor: '#000000',
-    backgroundColor:'#ffffff',
-
-  },
-  signOutButton:{
-    width: 80, 
-    height: 50, 
-    
-  },
-  info:{
-    flex:2,
-
-  },
-  infotext:{
-    color: '#ffffff',
-    textAlign: 'center',
+      <Icon name='star' width={32} height={32} fill='#3366FF' />
+      )
   }
-});
+
+    
+render(){
+  return(
+
+              <ScrollView>
+                <ListItem
+                  title='Rendir Gastos'
+                  onPress={() => this.props.navigation.navigate('Loading')} 
+                  Icon={()=>this.iconSimpleUsageShowcase()}
+                />
+                <ListItem
+                  title='Opcion 2'
+                  onPress={()=>{Alert.alert('hola1')}}
+                />
+                <ListItem
+                  title='Cerrar Sesión'
+                  onPress={this.signOut}
+                />
+              </ScrollView>
+
+) 
+
+}};
 
 export { HomeScreen };
