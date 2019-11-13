@@ -2,11 +2,15 @@ import React from 'react';
 import{View, 
 	Text,
 	StyleSheet, 
-	TextInput,
 	ScrollView,
+	Dimensions,
+	TextInput,
 	} from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import {Picker} from '@react-native-community/picker';
+const screenHeight = Dimensions.get('window').height; //Te entrega la altura de la pantalla del dispositivo
+const screenWidth = Dimensions.get('window').width; 
+
 
 class expenseMenuScreen extends React.Component {
   static navigationOptions = {
@@ -16,10 +20,19 @@ class expenseMenuScreen extends React.Component {
   	super(props)
   	this.state = { text: 'Ingrese Texto',
   	 date: '',
-  	 name:'Nombre'
+  	 name:'Nombre',
+  	 tipodoc:'Tipo Doc.',
+  	 ndoc:'',
+  	 fechagasto:'',
+  	 fechaingreso:'',
+  	 monto:'',
+  	 categoria:'Categoria',
+  	 proyecto:'Proyecto',
+  	 detalle:''
   	};
   	console.log(this.state.name)
   	this.nombres = this.props.navigation.getParam('nombres',null);
+  	this.tipodoc = this.props.navigation.getParam('tipodoc',null);
   	console.log('this.nombres',this.nombres);
   }
   componentDidMount() {
@@ -36,14 +49,11 @@ class expenseMenuScreen extends React.Component {
 	render(){
  
 		return(
-			<View style = {{flex:1,backgroundColor: '#c03c22',alignItems: 'center',}}>
+			<View style = {{flex:1,backgroundColor: 'white',alignItems: 'center',}}>
 				<ScrollView>
-				
-					{/*CONTAINER NOMBRE*/}
-					<View style = {styles.container}>
 						<Picker
 							  selectedValue={this.state.name}
-							  style={{height: 50, width: 200}}
+							  style={{height: 50, width:screenWidth}}
 							  onValueChange={(itemValue, itemIndex) =>
 							    this.setState({name: itemValue})
 							  }>
@@ -51,120 +61,26 @@ class expenseMenuScreen extends React.Component {
 							    return(<Picker.Item label={item} value={item} key={index}/>)
 							  })}
 						</Picker>
-					</View>
-					{/*CONTAINER TIPO DE DOCUMENTO*/}
-					<View style = {styles.container}>
-					</View>
-					{/*CONTAINER NUMERO DE DOCUMENTO*/}
-					<View style = {styles.container}>
-						{/*TEXTO*/}
-						<View>
-							<Text>
-								Ingrese Numero de Documento
-							</Text>
-						</View>
 
-						{/*TEXT INPUT*/}
-						<View>
-							<TextInput
-							    onChangeText={(text) => this.setState({text})}
-	      						value={this.state.text}
-							/>
-						</View>
-					</View>
-
-					{/*CONTAINER FECHA DE GASTOS*/}
-					<View style = {styles.container}>
-
-						{/*INGRESE FECHA*/}
-						<View>
-							<Text>
-								fecha actual {this.state.date}
-							</Text>
-						</View>
-					
-						{/*CALENDARIO*/}
-						<View>
-							<DatePicker
-						        style={{width: 200}}
-						        date={this.state.date}
-						        mode="date"
-						        placeholder="select date"
-						        format="DD-MM-YYYY"
-						        confirmBtnText="Confirm"
-						        cancelBtnText="Cancel"
-								customStyles={{
-						        	dateIcon: {
-							            position: 'absolute',
-							            left: 0,
-							            top: 4,
-							            marginLeft: 0
-						          	},
-						          	dateInput: {
-						          		marginLeft: 36
-						          }
-						          // ... You can check the source to find the other keys.
-						        }}
-						        onDateChange={(date) => {this.setState({date: date})}}
-						    />		
-						</View>
-					</View>
-					
-					{/*CONTAINER FECHA DE INGRESO*/}
-					<View style = {styles.container}>
+						<Picker
+							  selectedValue={this.state.tipodoc}
+							  style={{height: 50, width:screenWidth}}
+							  onValueChange={(itemValue, itemIndex) =>
+							    this.setState({tipodoc: itemValue})
+							  }>
+							  {this.tipodoc.map((item,index) => {
+							    return(<Picker.Item label={item} value={item} key={index}/>)
+							  })}
+						</Picker>
 						
-						{/*INGRESE FECHA*/}
-						<View>
-							<Text>
-								fecha actual {this.state.date}
-							</Text>
-						</View>
-					
-						{/*CALENDARIO*/}
-						<View>
-							<DatePicker
-						        style={{width: 200}}
-						        date={this.state.date}
-						        mode="date"
-						        placeholder="select date"
-						        format="DD-MM-YYYY"
-						        confirmBtnText="Confirm"
-						        cancelBtnText="Cancel"
-								customStyles={{
-						        	dateIcon: {
-							            position: 'absolute',
-							            left: 0,
-							            top: 4,
-							            marginLeft: 0
-						          	},
-						          	dateInput: {
-						          		marginLeft: 36
-						          }
-						          // ... You can check the source to find the other keys.
-						        }}
-						        onDateChange={(date) => {this.setState({date: date})}}
-						    />		
-						</View>
-					</View>
-					{/*CONTAINER MONTO*/}
-					<View style = {styles.container}>
-					</View>	
-					{/*CONTAINER METODO DE PAGO*/}
-					<View style = {styles.container}>
-					</View>
-					{/*CONTAINER CATEGORIA*/}
-					<View style = {styles.container}>
-					</View>
-					{/*CONTAINER PROYECTO*/}
-					<View style = {styles.container}>
-					</View>
-					{/*CONTAINER PROVEDOR*/}
-					<View style = {styles.container}>
-					</View>
-					{/*CONTAINER DESCRIPCION*/}
-					<View style = {styles.container}>
-					</View>
+						<TextInput  
+						          placeholder="Numero de Documento"  
+						          underlineColorAndroid='transparent'
+								  keyboardType={'numeric'}  
+								  onChangeText={(value)=>{this.setState({ndoc: value})}}
+						/>		
 				</ScrollView>		
+
 			</View>		
 		)
 
