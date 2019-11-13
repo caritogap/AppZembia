@@ -6,16 +6,19 @@ import{View,
 	ScrollView,
 	} from 'react-native';
 import DatePicker from 'react-native-datepicker';
-import RNPickerSelect from 'react-native-picker-select';
+import {Picker} from '@react-native-community/picker';
 
 class expenseMenuScreen extends React.Component {
   static navigationOptions = {
-    title: 'Expenses Menu',
+    title: 'Rendir Gastos',
   };
   constructor(props){
   	super(props)
-  	this.state = { text: 'Ingrese Texto'};
-  	this.state = { date: ''};
+  	this.state = { text: 'Ingrese Texto',
+  	 date: '',
+  	 name:'Nombre'
+  	};
+  	console.log(this.state.name)
   	this.nombres = this.props.navigation.getParam('nombres',null);
   	console.log('this.nombres',this.nombres);
   }
@@ -38,14 +41,16 @@ class expenseMenuScreen extends React.Component {
 				
 					{/*CONTAINER NOMBRE*/}
 					<View style = {styles.container}>
-						<RNPickerSelect
-				            onValueChange={(value) => console.log(value)}
-				            items={[
-				                { label: 'football', value: 'football' },
-				                { label: 'Basebaaall', value: 'baseball' },
-				                { label: 'Hockeaay', value: 'hockey' },
-			            	]}
-			        	/>
+						<Picker
+							  selectedValue={this.state.name}
+							  style={{height: 50, width: 200}}
+							  onValueChange={(itemValue, itemIndex) =>
+							    this.setState({name: itemValue})
+							  }>
+							  {this.nombres.map((item,index) => {
+							    return(<Picker.Item label={item} value={item} key={index}/>)
+							  })}
+						</Picker>
 					</View>
 					{/*CONTAINER TIPO DE DOCUMENTO*/}
 					<View style = {styles.container}>
