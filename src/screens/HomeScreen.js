@@ -58,16 +58,25 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
     SplashScreen.hide();
   }
 
+  iconSimpleUsageShowcase(){
+    return(
+      <Icon name='star' width={32} height={32} fill='#3366FF' />
+      )
+  }
+  
+
   render() {
     var name=this.userInfo.name
     var email=this.userInfo.email
+    
 
   return(
 
               <ScrollView>
                 <ListItem
                   title='Rendir Gastos'
-                  onPress={() => this.props.navigation.navigate('Loading')} Icon={this.icon}
+                  onPress={() => this.props.navigation.navigate('Loading')} 
+                  Icon={()=>this.iconSimpleUsageShowcase()}
                 />
                 <ListItem
                   title='Opcion 2'
