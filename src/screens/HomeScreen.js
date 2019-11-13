@@ -23,9 +23,6 @@ const screenWidth = Dimensions.get('window').width; //Te entrega el ancho de la 
   <Icon name='star'/>
 );*/
 
-
-const logoZembia = require('./../img/logo.png');
-
 class HomeScreen extends React.Component {  //Definicion de la pantalla despues del incicio de sesion
 
   static navigationOptions = {
@@ -36,7 +33,8 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
         textAlign:"center", 
         flex:1 
     },
-  };
+  }
+
 
   constructor(props) {
     super(props);
@@ -50,7 +48,7 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
       this.setState({ user: null }); // Remember to remove the user from your app's state as well
       this.props.navigation.navigate('Login');
       } catch (error) {
-      console.error(error);
+      console.error(error);welcome
     }
   };
 
@@ -63,13 +61,9 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
       <Icon name='star' width={32} height={32} fill='#3366FF' />
       )
   }
-  
 
-  render() {
-    var name=this.userInfo.name
-    var email=this.userInfo.email
     
-
+render(){
   return(
 
               <ScrollView>
@@ -87,19 +81,9 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
                   onPress={this.signOut}
                 />
               </ScrollView>
-         )
-  } 
-}
 
-const styles = StyleSheet.create({
-  container:{
+) 
 
-    //flexDirection:'column',
-    /*alignItems: 'center',
-    justifyContent: 'center',*/
-    backgroundColor: '#c03c22',
-  }
-
-});
+}};
 
 export { HomeScreen };

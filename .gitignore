@@ -32,7 +32,11 @@ local.properties
 
 # node.js
 #
+<<<<<<< Updated upstream
 /node-modules
+=======
+node_modules/
+>>>>>>> Stashed changes
 npm-debug.log
 yarn-error.log
 
