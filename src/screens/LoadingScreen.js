@@ -79,97 +79,111 @@ async getData(filas){
   var tipogasto=[]
   var dataReady=[0,0,0,0,0,0,0]
   var check
-  instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!A1:A'+filas[0], includeGridData:true }})
+  instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!A2:A'+filas[0], includeGridData:true }})
 .then(response=>{
   
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
       nombres.push(v[x].values[0].formattedValue)
     }
-  
+  nombres.sort()
+  nombres.unshift('Nombre')
   console.log(nombres)
+
   dataReady[0]=1
   check=dataReady.reduce((a, b) => a + b, 0)
   if(check===7){
     this.props.navigation.navigate('expenseMenu', {
+      token:this.state.token,
       nombres: nombres, 
       tipodoc: tipodoc, 
       metodos: metodos, 
       categorias: categorias, 
       proyectos: proyectos, 
-      proveedores: proveedores
+      proveedores: proveedores,
+      tipogasto: tipogasto
     });
   }
 })
 
-  instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!B1:B'+filas[1], includeGridData:true }})
+  instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!B2:B'+filas[1], includeGridData:true }})
 .then(response=>{
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
       tipodoc.push(v[x].values[0].formattedValue)
     }
+    tipodoc.sort()
+    tipodoc.unshift('Tipo de Documento')
     console.log(tipodoc)
     dataReady[1]=1
     check=dataReady.reduce((a, b) => a + b, 0)
     if(check===7){
-    this.props.navigation.navigate('expenseMenu',{nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores});;
+    this.props.navigation.navigate('expenseMenu',{token: this.state.token, nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores, tipogasto: tipogasto});
   }
 
 })
 
-instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!C1:C'+filas[2], includeGridData:true }})
+instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!C2:C'+filas[2], includeGridData:true }})
 .then(response=>{
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
       categorias.push(v[x].values[0].formattedValue)
     }
+    categorias.sort()
+    categorias.unshift('Categoria')
     console.log(categorias)
     dataReady[2]=1
     check=dataReady.reduce((a, b) => a + b, 0)
     if(check===7){
-    this.props.navigation.navigate('expenseMenu',{nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores});;
+    this.props.navigation.navigate('expenseMenu',{token: this.state.token, nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores, tipogasto: tipogasto});;
   }
 })
 
-instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!K1:K'+filas[10], includeGridData:true }})
+instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!K2:K'+filas[10], includeGridData:true }})
 .then(response=>{
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
       metodos.push(v[x].values[0].formattedValue)
     }
+    metodos.sort()
+    metodos.unshift('Metodo de Pago')
     console.log(metodos)
     dataReady[3]=1
     check=dataReady.reduce((a, b) => a + b, 0)
     if(check===7){
-    this.props.navigation.navigate('expenseMenu',{nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores});;
+    this.props.navigation.navigate('expenseMenu',{token: this.state.token, nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores, tipogasto: tipogasto});;
   }
 })
 
-instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!L1:L'+filas[11], includeGridData:true }})
+instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!L2:L'+filas[11], includeGridData:true }})
 .then(response=>{
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
       tipogasto.push(v[x].values[0].formattedValue)
     }
+    tipogasto.sort()
+    tipogasto.unshift('Tipo de Gasto')
     console.log(tipogasto)
     dataReady[4]=1
     check=dataReady.reduce((a, b) => a + b, 0)
     if(check===7){
-    this.props.navigation.navigate('expenseMenu',{nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores});;
+    this.props.navigation.navigate('expenseMenu',{token: this.state.token, nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores, tipogasto: tipogasto});;
   }
 })
 
-instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'Proyectos!B3:B'+filas[3], includeGridData:true }})
+instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'Proyectos!B4:B'+filas[3], includeGridData:true }})
 .then(response=>{
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
       proyectos.push(v[x].values[0].formattedValue)
     }
+    proyectos.sort()
+    proyectos.unshift('Proyecto')
     console.log(proyectos)
     dataReady[5]=1
     check=dataReady.reduce((a, b) => a + b, 0)
     if(check===7){
-    this.props.navigation.navigate('expenseMenu',{nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores});;
+    this.props.navigation.navigate('expenseMenu',{token: this.state.token,  tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores});;
   }
 })
 
@@ -185,7 +199,7 @@ instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZL
     dataReady[6]=1
     check=dataReady.reduce((a, b) => a + b, 0)
     if(check===7){
-    this.props.navigation.navigate('expenseMenu',{nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores});
+    this.props.navigation.navigate('expenseMenu',{token: this.state.token, nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores, tipogasto: tipogasto});
   }
 })
 

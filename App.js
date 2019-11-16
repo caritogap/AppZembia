@@ -7,6 +7,7 @@ import { HomeScreen } from './src/screens/HomeScreen';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { expenseMenuScreen } from './src/screens/expenseMenuScreen';
 import { LoadingScreen } from './src/screens/LoadingScreen';
+import { SuccessScreen } from './src/screens/SuccessScreen';
 import { mapping, light as lightTheme } from '@eva-design/eva';
 import { ApplicationProvider, Layout, Text } from 'react-native-ui-kitten';
 
@@ -26,6 +27,7 @@ const AppNavigator = createStackNavigator(
     Home: HomeScreen,
     expenseMenu: expenseMenuScreen,
     Loading: LoadingScreen,
+    success: SuccessScreen,
   },
   {
     initialRouteName: 'Login',
