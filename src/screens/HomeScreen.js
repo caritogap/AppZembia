@@ -17,15 +17,16 @@ import {
   ListItem,
 } from 'react-native-ui-kitten';
 import { Icon } from 'react-native-eva-icons';
+import Hr from "react-native-hr-plus";
 
-const GithubIcon = () => (
-  <Icon name='github' width={48} height={48}/>
+const IconoGastos = () => (
+  <Icon name='file-text-outline' width={48} height={48}/>
+);
+const IconoCerrarSesion = () => (
+  <Icon name='log-out-outline' width={48} height={48}/>
 );
 const screenHeight = Dimensions.get('window').height; //Te entrega la altura de la pantalla del dispositivo
 const screenWidth = Dimensions.get('window').width; //Te entrega el ancho de la pantalla del dispositivo
-const StarIcon = () => (
-  <Icon name='star'/>
-);
 
 class HomeScreen extends React.Component {  //Definicion de la pantalla despues del incicio de sesion
 
@@ -65,19 +66,19 @@ render(){
   return(
 
               <ScrollView>
+              
                 <ListItem
                   title='Rendir Gastos'
                   onPress={() => this.props.navigation.navigate('Loading')} 
-                  icon={StarIcon}
+                  icon={IconoGastos}
                 />
-                <ListItem
-                  title='Opcion 2'
-                  onPress={()=>{Alert.alert('hola1')}}
-                />
+                <Hr color="#aaa" width={1}><Text></Text></Hr>
                 <ListItem
                   title='Cerrar Sesión'
                   onPress={this.signOut}
+                  icon={IconoCerrarSesion}
                 />
+                <Hr color="#aaa" width={1}><Text></Text></Hr>
               </ScrollView>
 
 ) 
