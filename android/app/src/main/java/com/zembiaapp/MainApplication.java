@@ -3,6 +3,7 @@ package com.zembiaapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.horcrux.svg.SvgPackage;
 import com.reactnativecommunity.picker.RNCPickerPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SvgPackage(),
             new RNCPickerPackage(),
             new SplashScreenReactPackage(),
             new RNGestureHandlerPackage(),

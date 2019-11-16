@@ -13,15 +13,19 @@ import{View,
   TouchableOpacity,
   Alert,Dimensions} from 'react-native';
 import {
-  Icon,
   List,
   ListItem,
 } from 'react-native-ui-kitten';
+import { Icon } from 'react-native-eva-icons';
+
+const GithubIcon = () => (
+  <Icon name='github' width={48} height={48}/>
+);
 const screenHeight = Dimensions.get('window').height; //Te entrega la altura de la pantalla del dispositivo
 const screenWidth = Dimensions.get('window').width; //Te entrega el ancho de la pantalla del dispositivo
-/*const StarIcon = (style,) => (
+const StarIcon = () => (
   <Icon name='star'/>
-);*/
+);
 
 class HomeScreen extends React.Component {  //Definicion de la pantalla despues del incicio de sesion
 
@@ -56,13 +60,6 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
     SplashScreen.hide();
   }
 
-  iconSimpleUsageShowcase(){
-    return(
-
-      <Icon name='star' width={32} height={32} fill='#3366FF' />
-      )
-  }
-
     
 render(){
   return(
@@ -71,7 +68,7 @@ render(){
                 <ListItem
                   title='Rendir Gastos'
                   onPress={() => this.props.navigation.navigate('Loading')} 
-                  Icon={()=>this.iconSimpleUsageShowcase()}
+                  icon={StarIcon}
                 />
                 <ListItem
                   title='Opcion 2'
