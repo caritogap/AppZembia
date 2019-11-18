@@ -4,7 +4,7 @@ import {
   GoogleSigninButton,
   statusCodes
 } from 'react-native-google-signin';
-import { Alert, View, Image, StyleSheet, Dimensions,Text } from 'react-native';
+import { Alert, View, Image, StyleSheet, Dimensions,Text,BackHandler } from 'react-native';
 const screenHeight = Dimensions.get('window').height; //Te entrega la altura de la pantalla del dispositivo
 const screenWidth = Dimensions.get('window').width; //Te entrega el ancho de la pantalla del dispositivo
 const logoZembia = require('./../img/logo.png');
@@ -20,6 +20,7 @@ class LoadingScreen extends React.Component{
 	constructor(props){
 	
   	super(props);
+    this.backButton=this.backButton.bind(this)
     this.Token=this.Token.bind(this);
     this.getColumnSizes=this.getColumnSizes.bind(this);
     this.state={
@@ -32,13 +33,25 @@ class LoadingScreen extends React.Component{
 
 
 	async componentDidMount(){
-    
+
+    BackHandler.addEventListener('hardwareBackPress',this.backButton)
     await this.Token()
     console.log('token',this.state.token)
     await this.getColumnSizes()
 
     
 	}
+
+
+  componentWillUnmount(){
+
+    BackHandler.removeEventListener('hardwareBackPress',this.backButton)
+  }
+  
+  backButton(){
+    this.props.navigation.navigate('Home')
+    return true
+  }
 
   async getColumnSizes() {  //Funcion que lee los datos de la Spreadsheet
   const instance=axios.create({
@@ -70,6 +83,7 @@ async getData(filas){
   maxContentLength: Infinity,
   })
 
+  var aux=[]
   var nombres=[]
   var tipodoc=[]
   var categorias=[]
@@ -81,13 +95,15 @@ async getData(filas){
   var check
   instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!A2:A'+filas[0], includeGridData:true }})
 .then(response=>{
-  
+  aux=[]
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
-      nombres.push(v[x].values[0].formattedValue)
+      aux.push(v[x].values[0].formattedValue)
     }
-  nombres.sort()
-  nombres.unshift('Nombre')
+  aux.sort()
+  for(var x in aux){
+     nombres.push({text: aux[x]})
+  }
   console.log(nombres)
 
   dataReady[0]=1
@@ -108,12 +124,15 @@ async getData(filas){
 
   instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!B2:B'+filas[1], includeGridData:true }})
 .then(response=>{
+  aux=[]
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
-      tipodoc.push(v[x].values[0].formattedValue)
+      aux.push(v[x].values[0].formattedValue)
     }
-    tipodoc.sort()
-    tipodoc.unshift('Tipo de Documento')
+    aux.sort()
+    for(var x in aux){
+     tipodoc.push({text: aux[x]})
+  }
     console.log(tipodoc)
     dataReady[1]=1
     check=dataReady.reduce((a, b) => a + b, 0)
@@ -125,12 +144,15 @@ async getData(filas){
 
 instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!C2:C'+filas[2], includeGridData:true }})
 .then(response=>{
+  aux=[]
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
-      categorias.push(v[x].values[0].formattedValue)
+      aux.push(v[x].values[0].formattedValue)
     }
-    categorias.sort()
-    categorias.unshift('Categoria')
+    aux.sort()
+    for(var x in aux){
+     categorias.push({text: aux[x]})
+  }
     console.log(categorias)
     dataReady[2]=1
     check=dataReady.reduce((a, b) => a + b, 0)
@@ -141,12 +163,15 @@ instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZL
 
 instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!K2:K'+filas[10], includeGridData:true }})
 .then(response=>{
+  aux=[]
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
-      metodos.push(v[x].values[0].formattedValue)
+      aux.push(v[x].values[0].formattedValue)
     }
-    metodos.sort()
-    metodos.unshift('Metodo de Pago')
+    aux.sort()
+    for(var x in aux){
+     metodos.push({text: aux[x]})
+  }
     console.log(metodos)
     dataReady[3]=1
     check=dataReady.reduce((a, b) => a + b, 0)
@@ -157,12 +182,15 @@ instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZL
 
 instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!L2:L'+filas[11], includeGridData:true }})
 .then(response=>{
+  aux=[]
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
-      tipogasto.push(v[x].values[0].formattedValue)
+      aux.push(v[x].values[0].formattedValue)
     }
-    tipogasto.sort()
-    tipogasto.unshift('Tipo de Gasto')
+    aux.sort()
+    for(var x in aux){
+     tipogasto.push({text: aux[x]})
+  }
     console.log(tipogasto)
     dataReady[4]=1
     check=dataReady.reduce((a, b) => a + b, 0)
@@ -173,12 +201,15 @@ instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZL
 
 instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'Proyectos!B4:B'+filas[3], includeGridData:true }})
 .then(response=>{
+  aux=[]
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
-      proyectos.push(v[x].values[0].formattedValue)
+      aux.push(v[x].values[0].formattedValue)
     }
-    proyectos.sort()
-    proyectos.unshift('Proyecto')
+    aux.sort()
+    for(var x in aux){
+     proyectos.push({text: aux[x]})
+  }
     console.log(proyectos)
     dataReady[5]=1
     check=dataReady.reduce((a, b) => a + b, 0)
@@ -189,12 +220,15 @@ instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZL
 
 instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'Terceros!B2:B'+filas[4], includeGridData:true }})
 .then(response=>{
+  aux=[]
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
-      proveedores.push(v[x].values[0].formattedValue)
+      aux.push(v[x].values[0].formattedValue)
     }
-    proveedores.sort()
-    proveedores.unshift('Proveedor')
+    aux.sort()
+    for(var x in aux){
+     proveedores.push({text: aux[x]})
+  }
     console.log(proveedores)
     dataReady[6]=1
     check=dataReady.reduce((a, b) => a + b, 0)

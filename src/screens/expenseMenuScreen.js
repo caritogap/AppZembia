@@ -5,15 +5,23 @@ import{View,
 	ScrollView,
 	Dimensions,
 	TextInput,
-	Button
+	Button,
+	BackHandler,
+	Alert
 	} from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import DatePicker from 'react-native-datepicker';
 import {Picker} from '@react-native-community/picker';
 import AnimateLoadingButton from 'react-native-animate-loading-button';
 import axios from 'axios';
+import { Select,
+	Input
+	} from 'react-native-ui-kitten';
+import { Icon } from 'react-native-eva-icons';
+
 const screenHeight = Dimensions.get('window').height; //Te entrega la altura de la pantalla del dispositivo
 const screenWidth = Dimensions.get('window').width; 
+
 
 
 class expenseMenuScreen extends React.Component {
@@ -22,20 +30,23 @@ class expenseMenuScreen extends React.Component {
   };
   constructor(props){
   	super(props)
+  	
   	this.Loading=this.Loading.bind(this)
+  	this.backButton=this.backButton.bind(this)
+  	
   	this.state = { text: 'Ingrese Texto',
   	 date: '',
-  	 name:'Nombre',
-  	 tipodoc:'Tipo de Documento',
+  	 name: null,
+  	 tipodoc:null,
   	 ndoc:'',
   	 fechagasto:'',
   	 fechaingreso:'',
   	 monto:'',
-  	 metodo:'Metodo de pago',
-  	 categoria:'Categoria',
-  	 proyecto:'Proyecto',
-  	 proveedor:'Proveedor',
-  	 tipogasto: 'Tipo de Gasto',
+  	 metodo:null,
+  	 categoria:null,
+  	 proyecto:null,
+  	 proveedor:null,
+  	 tipogasto: null,
   	 detalle:'',
   	 id:''
   	};
@@ -57,6 +68,7 @@ class expenseMenuScreen extends React.Component {
     var date = new Date().getDate(); //Current Date
     var month = new Date().getMonth() + 1; //Current Month
     var year = new Date().getFullYear(); //Current Year
+    BackHandler.addEventListener('hardwareBackPress',this.backButton)
     that.setState({
       //Setting the value of the date time
       fechagasto:
@@ -64,8 +76,19 @@ class expenseMenuScreen extends React.Component {
       fechaingreso:
       date + '/' + month + '/' + year,
     });
-  }
+    }
 
+    componentWillUnmount() {
+    	 BackHandler.removeEventListener('hardwareBackPress', this.backButton);
+
+
+    }
+
+backButton(){
+ 	this.props.navigation.navigate('Home')
+ 	return true 
+
+}
   Loading(){
   	this.loadingButton.showLoading(true)
   	const instance=axios.create({
@@ -80,18 +103,18 @@ class expenseMenuScreen extends React.Component {
   	instance.post('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/values/Rendicion!A:Z:append',{"values": [
     [
       "="+this.state.id+"+1",
-      this.state.name,
-      this.state.tipodoc,
+      this.state.name.text,
+      this.state.tipodoc.text,
       this.state.ndoc,
       this.state.fechagasto,
       this.state.fechaingreso,
       "$"+this.state.monto,
-      this.state.metodo,
-      this.state.categoria,
-      this.state.proyecto,
-      this.state.proveedor,
+      this.state.metodo.text,
+      this.state.categoria.text,
+      this.state.proyecto.text,
+      this.state.proveedor.text,
       this.state.detalle,
-      this.state.tipogasto
+      this.state.tipogasto.text
     ]
   ]},{params:{
 		insertDataOption: 'INSERT_ROWS',
@@ -99,12 +122,17 @@ class expenseMenuScreen extends React.Component {
 		valueInputOption: 'USER_ENTERED',
 	}})
   .then(response=>{
+  	this.loadingButton.showLoading(false)
 	console.log(response)
 	this.props.navigation.navigate('success')
+	
 })
+  .catch((error)=>{
+  	this.loadingButton.showLoading(false)
+  })
   })
 
-	
+	this.loadingButton.showLoading(false)
 
 }  	
 
@@ -112,37 +140,9 @@ class expenseMenuScreen extends React.Component {
 	render(){
  
 		return(
-			<View style = {{flex:1,backgroundColor: 'white',alignItems: 'center',}}>
-				<ScrollView>
-						<Picker
-							  selectedValue={this.state.name}
-							  style={{height: 50, width:screenWidth}}
-							  onValueChange={(itemValue, itemIndex) =>
-							    this.setState({name: itemValue})
-							  }>
-							  {this.nombres.map((item,index) => {
-							    return(<Picker.Item label={item} value={item} key={index}/>)
-							  })}
-						</Picker>
-
-						<Picker
-							  selectedValue={this.state.tipodoc}
-							  style={{height: 50, width:screenWidth}}
-							  onValueChange={(itemValue, itemIndex) =>
-							    this.setState({tipodoc: itemValue})
-							  }>
-							  {this.tipodoc.map((item,index) => {
-							    return(<Picker.Item label={item} value={item} key={index}/>)
-							  })}
-						</Picker>
-						
-						<TextInput  
-						          placeholder="Numero de Documento"  
-						          underlineColorAndroid='transparent'
-								  keyboardType={'numeric'}  
-								  onChangeText={(value)=>{this.setState({ndoc: value})}}
-						/>		
-
+			<View style = {{flex:1,backgroundColor: 'white',alignItems: 'center', height: screenHeight, width: screenWidth }}>
+				<ScrollView style={{flex:1}}>
+						<Text> Fecha del Gasto </Text>
 						<DatePicker
 					        style={{width: 200}}
 					        date={this.state.fechagasto}
@@ -165,73 +165,111 @@ class expenseMenuScreen extends React.Component {
 					        }}
 					        onDateChange={(date) => {this.setState({fechagasto: date})}}
 					      />
-					      
 
-					     <TextInput  
-						          placeholder="Monto"  
-								  keyboardType={'numeric'}  
-								  onChangeText={(value)=>{this.setState({monto: value})}}
-						/> 
+						 <Select
+						  style={styles.select}
+				          data={this.nombres}
+				          placeholder='Nombre'
+				          selectedOption={this.state.name}
+				          onSelect={(selectedOption)=>{this.setState({name: selectedOption})
+				          console.log(selectedOption.text)
+				      	}}
+				        />
 
-						<Picker
-							  selectedValue={this.state.metodo}
-							  style={{height: 50, width:screenWidth}}
-							  onValueChange={(itemValue, itemIndex) =>
-							    this.setState({metodo: itemValue})
-							  }>
-							  {this.metodos.map((item,index) => {
-							    return(<Picker.Item label={item} value={item} key={index}/>)
-							  })}
-						</Picker>
-						<Picker
-							  selectedValue={this.state.categoria}
-							  style={{height: 50, width:screenWidth}}
-							  onValueChange={(itemValue, itemIndex) =>
-							    this.setState({categoria: itemValue})
-							  }>
-							  {this.categorias.map((item,index) => {
-							    return(<Picker.Item label={item} value={item} key={index}/>)
-							  })}
-						</Picker>
+				        <Select
+						  style={styles.select}
+				          data={this.tipogasto}
+				          placeholder='Tipo de Gasto'
+				          selectedOption={this.state.tipogasto}
+				          onSelect={(selectedOption)=>{this.setState({tipogasto: selectedOption})
+				          console.log(selectedOption.text)
+				      	}}
+				        />
 
-						<Picker
-							  selectedValue={this.state.tipogasto}
-							  style={{height: 50, width:screenWidth}}
-							  onValueChange={(itemValue, itemIndex) =>
-							    this.setState({tipogasto: itemValue})
-							  }>
-							  {this.tipogasto.map((item,index) => {
-							    return(<Picker.Item label={item} value={item} key={index}/>)
-							  })}
-						</Picker>
-
-						<Picker
-							  selectedValue={this.state.proyecto}
-							  style={{height: 50, width:screenWidth}}
-							  onValueChange={(itemValue, itemIndex) =>
-							    this.setState({proyecto: itemValue})
-							  }>
-							  {this.proyectos.map((item,index) => {
-							    return(<Picker.Item label={item} value={item} key={index}/>)
-							  })}
-						</Picker>
-
-						<Picker
-							  selectedValue={this.state.proveedor}
-							  style={{height: 50, width:screenWidth}}
-							  onValueChange={(itemValue, itemIndex) =>
-							    this.setState({proveedor: itemValue})
-							  }>
-							  {this.proveedores.map((item,index) => {
-							    return(<Picker.Item label={item} value={item} key={index}/>)
-							  })}
-						</Picker>
+				        <Select
+						  style={styles.select}
+				          data={this.categorias}
+				          placeholder='Categoria'
+				          selectedOption={this.state.categoria}
+				          onSelect={(selectedOption)=>{this.setState({categoria: selectedOption})
+				          console.log(selectedOption.text)
+				      	}}
+				        />
+										        
 						
-						<TextInput  
-						          placeholder="Detalle"  
-						          underlineColorAndroid='transparent'
-								  onChangeText={(value)=>{this.setState({detalle: value})}}
-						/>		
+				        <Select
+						style={styles.select}
+				          data={this.proveedores}
+				          placeholder='Proveedor'
+				          selectedOption={this.state.proveedor}
+				          onSelect={(selectedOption)=>{this.setState({proveedor: selectedOption})
+				          console.log(selectedOption.text)
+				      	}}
+				        />
+
+				        <Select
+				          style={styles.select}
+				          data={this.proyectos}
+				          placeholder='Proyecto'
+				          selectedOption={this.state.proyecto}
+				          onSelect={(selectedOption)=>{this.setState({proyecto: selectedOption})
+				          console.log(selectedOption.text)
+				      	}}
+				        />
+
+				        <Select
+						 style={styles.select}
+				          data={this.metodos}
+				          placeholder='Metodo de Pago'
+				          selectedOption={this.state.metodo}
+				          onSelect={(selectedOption)=>{this.setState({metodo: selectedOption})
+				          console.log(selectedOption.text)
+				      	}}
+				        />    
+						
+						
+						
+						<Select
+						 style={styles.select}
+				          data={this.tipodoc}
+				          placeholder='Tipo de Documento'
+				          selectedOption={this.state.tipodoc}
+				          onSelect={(selectedOption)=>{this.setState({tipodoc: selectedOption})
+				          console.log(selectedOption.text)
+				      	}}
+				        />
+
+
+
+				        <Input
+					        label='Numero de Documento'
+					        placeholder=''
+					        value={this.state.ndoc}
+					        keyboardType={'numeric'}  
+							onChangeText={(value)=>{this.setState({ndoc: value})}}
+							size='small'
+							style={{width:screenWidth*0.9}}
+					      />
+
+				        <Input
+					        label='Monto'
+					        placeholder=''
+					        value={this.state.monto}
+					        keyboardType={'numeric'}  
+							onChangeText={(value)=>{this.setState({monto: value})}}
+							size='small'
+							style={{width:screenWidth*0.9}}
+					      />
+						
+						 <Input
+					        label='Descripción'
+					        placeholder=''
+					        value={this.state.detalle}
+					        keyboardType={'numeric'}  
+							onChangeText={(value)=>{this.setState({detalle: value})}}
+							size='large'
+							style={{width:screenWidth*0.9}}
+					      />		
 						
 						<AnimateLoadingButton
 				          ref={c => (this.loadingButton = c)}
@@ -261,6 +299,11 @@ const styles  = StyleSheet.create({
     	borderColor: '#000000',
     	backgroundColor:'#ffffff',
 		flexDirection:'column',
+	},
+	select:{
+
+		width: screenWidth*0.9
+
 	}
 });
 export { expenseMenuScreen };

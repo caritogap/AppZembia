@@ -11,21 +11,24 @@ import{View,
   StyleSheet, 
   ScrollView,
   TouchableOpacity,
-  Alert,Dimensions} from 'react-native';
+  Alert,
+  Dimensions,
+  BackHandler} from 'react-native';
 import {
   List,
   ListItem,
 } from 'react-native-ui-kitten';
 import { Icon } from 'react-native-eva-icons';
+import Hr from "react-native-hr-plus";
 
-const GithubIcon = () => (
-  <Icon name='github' width={48} height={48}/>
+const IconoGastos = () => (
+  <Icon name='file-text-outline' width={48} height={48}/>
+);
+const IconoCerrarSesion = () => (
+  <Icon name='log-out-outline' width={48} height={48}/>
 );
 const screenHeight = Dimensions.get('window').height; //Te entrega la altura de la pantalla del dispositivo
 const screenWidth = Dimensions.get('window').width; //Te entrega el ancho de la pantalla del dispositivo
-const StarIcon = () => (
-  <Icon name='star'/>
-);
 
 class HomeScreen extends React.Component {  //Definicion de la pantalla despues del incicio de sesion
 
@@ -44,6 +47,7 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
     super(props);
     this.userInfo = this.props.navigation.getParam('userInfo', null);
     this.signOut = this.signOut.bind(this);
+    this.backButton=this.backButton.bind(this);
   }
   
   async signOut() {
@@ -52,32 +56,43 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
       this.setState({ user: null }); // Remember to remove the user from your app's state as well
       this.props.navigation.navigate('Login');
       } catch (error) {
-      console.error(error);welcome
+      console.error(error);
     }
   };
 
   componentDidMount(){
     SplashScreen.hide();
+    BackHandler.addEventListener('hardwareBackPress',this.backButton)
   }
 
-    
-render(){
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.backButton);
+
+  }
+
+  backButton(){
+    BackHandler.exitApp();
+    return true
+
+  }  
+  render(){
+  
   return(
 
               <ScrollView>
+
                 <ListItem
                   title='Rendir Gastos'
                   onPress={() => this.props.navigation.navigate('Loading')} 
-                  icon={StarIcon}
+                  icon={IconoGastos}
                 />
-                <ListItem
-                  title='Opcion 2'
-                  onPress={()=>{Alert.alert('hola1')}}
-                />
+                <Hr color="#aaa" width={1}><Text></Text></Hr>
                 <ListItem
                   title='Cerrar Sesión'
                   onPress={this.signOut}
+                  icon={IconoCerrarSesion}
                 />
+                <Hr color="#aaa" width={1}><Text></Text></Hr>
               </ScrollView>
 
 ) 

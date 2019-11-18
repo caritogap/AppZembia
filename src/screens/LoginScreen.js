@@ -76,6 +76,7 @@ class LoginScreen extends React.Component {
           style={{
             width: screenWidth * 0.9,
             resizeMode: 'contain',
+            alignSelf: 'center',
             position: 'absolute',
             top: screenHeight / 5
           }}
