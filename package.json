@@ -20,10 +20,10 @@
     "react-native": "0.59.0",
     "react-native-animate-loading-button": "^1.0.3",
     "react-native-datepicker": "^1.7.2",
-    "react-native-divider": "^1.0.3",
     "react-native-eva-icons": "^1.2.1",
     "react-native-gesture-handler": "^1.5.0",
     "react-native-google-signin": "^2.1.0",
+    "react-native-hr-plus": "^1.0.6",
     "react-native-indicators": "^0.17.0",
     "react-native-picker-select": "^6.3.3",
     "react-native-really-awesome-button": "^1.4.2",
@@ -34,7 +34,8 @@
     "react-native-ui-kitten": "^4.2.0",
     "react-native-update-gradle": "^1.2.0",
     "react-navigation": "^4.0.10",
-    "react-navigation-stack": "^1.10.3"
+    "react-navigation-stack": "^1.10.3",
+    "styled-components": "^4.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",

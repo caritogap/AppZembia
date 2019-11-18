@@ -53,7 +53,7 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
       this.setState({ user: null }); // Remember to remove the user from your app's state as well
       this.props.navigation.navigate('Login');
       } catch (error) {
-      console.error(error);welcome
+      console.error(error);
     }
   };
 
@@ -66,7 +66,7 @@ render(){
   return(
 
               <ScrollView>
-              
+
                 <ListItem
                   title='Rendir Gastos'
                   onPress={() => this.props.navigation.navigate('Loading')} 
