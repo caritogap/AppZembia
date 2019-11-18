@@ -11,7 +11,9 @@ import{View,
   StyleSheet, 
   ScrollView,
   TouchableOpacity,
-  Alert,Dimensions} from 'react-native';
+  Alert,
+  Dimensions,
+  BackHandler} from 'react-native';
 import {
   List,
   ListItem,
@@ -45,6 +47,7 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
     super(props);
     this.userInfo = this.props.navigation.getParam('userInfo', null);
     this.signOut = this.signOut.bind(this);
+    this.backButton=this.backButton.bind(this);
   }
   
   async signOut() {
@@ -59,10 +62,21 @@ class HomeScreen extends React.Component {  //Definicion de la pantalla despues 
 
   componentDidMount(){
     SplashScreen.hide();
+    BackHandler.addEventListener('hardwareBackPress',this.backButton)
   }
 
-    
-render(){
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.backButton);
+
+  }
+
+  backButton(){
+    BackHandler.exitApp();
+    return true
+
+  }  
+  render(){
+  
   return(
 
               <ScrollView>

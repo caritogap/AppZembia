@@ -20,8 +20,7 @@ return(
 	<View style={styles.container}>
 		<Image source={require("./../img/checkmark.png")} style={{position: 'absolute', top: screenHeight*0.15}}/>
 		<Text style={{color:'white',fontSize: 20, position:'absolute',top:screenHeight*0.6}}> Información subida con éxito </Text>
-		<AwesomeButtonRick type="secondary" onPress={()=>{this.props.navigation.navigate('expenseMenu')}}style={{position:'absolute',top:screenHeight*0.7}}>Rendir otro Gasto</AwesomeButtonRick>
-		<AwesomeButtonRick type="secondary" onPress={()=>{this.props.navigation.navigate('Home')}} style={{position:'absolute',top:screenHeight*0.8}}>Volver a Home</AwesomeButtonRick>
+		<AwesomeButtonRick type="secondary" onPress={()=>{this.props.navigation.navigate('Home')}} style={{position:'absolute',top:screenHeight*0.75}}>Volver a Home</AwesomeButtonRick>
 	</View>
 )
 }
