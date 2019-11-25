@@ -27,6 +27,13 @@ const screenWidth = Dimensions.get('window').width;
 class expenseMenuScreen extends React.Component {
   static navigationOptions = {
     title: 'Rendir Gastos',
+    headerLeft: null,
+    headerLayoutPreset: 'center',
+    headerTitleStyle: { 
+        textAlign:"center", 
+        flex:1 
+    },
+
   };
   constructor(props){
   	super(props)
@@ -264,8 +271,8 @@ backButton(){
 						 <Input
 					        label='Descripción'
 					        placeholder=''
-					        value={this.state.detalle}
-					        keyboardType={'numeric'}  
+					        keyboardType={'default'}
+					        value={this.state.detalle}  
 							onChangeText={(value)=>{this.setState({detalle: value})}}
 							size='large'
 							style={{width:screenWidth*0.9}}

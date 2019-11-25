@@ -4,13 +4,14 @@ import {
   GoogleSigninButton,
   statusCodes
 } from 'react-native-google-signin';
-import { Alert, View, Image, StyleSheet, Dimensions,Text,BackHandler } from 'react-native';
+import { Alert, View, Image, StyleSheet, Dimensions,Text,BackHandler} from 'react-native';
+import NetInfo from "@react-native-community/netinfo";
 const screenHeight = Dimensions.get('window').height; //Te entrega la altura de la pantalla del dispositivo
 const screenWidth = Dimensions.get('window').width; //Te entrega el ancho de la pantalla del dispositivo
 const logoZembia = require('./../img/logo.png');
 import { PacmanIndicator } from 'react-native-indicators';
 import axios from 'axios'
-
+ 
 
 class LoadingScreen extends React.Component{
 	static navigationOptions = {
@@ -18,36 +19,61 @@ class LoadingScreen extends React.Component{
   };
 
 	constructor(props){
-	
+    
   	super(props);
     this.backButton=this.backButton.bind(this)
     this.Token=this.Token.bind(this);
     this.getColumnSizes=this.getColumnSizes.bind(this);
+    this.connectionChange=this.connectionChange.bind(this);
     this.state={
   
       token: null,
   
     }
     this.getData=this.getData.bind(this);
+    const unsubscribe = NetInfo.addEventListener(this.connectionChange);
+    this.unsubscribe=unsubscribe  
 	}
 
 
 	async componentDidMount(){
-
-    BackHandler.addEventListener('hardwareBackPress',this.backButton)
-    await this.Token()
+  const CancelToken = axios.CancelToken;
+        // create the source
+        this.source = CancelToken.source();  
+  NetInfo.isConnected.fetch().then(async(isConnected) => {
+    if(isConnected===true){
+      await this.Token()
     console.log('token',this.state.token)
     await this.getColumnSizes()
+    }
+    else{
+      Alert.alert('Por favor conectate a Internet')
+      this.props.navigation.navigate('Home')
+    }
+  });
 
+    BackHandler.addEventListener('hardwareBackPress',this.backButton)
     
+
 	}
 
 
   componentWillUnmount(){
-
+    console.log('unmount')
+    this.source.cancel('Cancel')
     BackHandler.removeEventListener('hardwareBackPress',this.backButton)
+    this.unsubscribe();
   }
   
+
+  connectionChange(state){
+    if(state.isConnected===false){
+      Alert.alert('Error de Red')
+      this.source.cancel('Cancel')
+      this.props.navigation.navigate('Home')
+    }
+  }
+
   backButton(){
     this.props.navigation.navigate('Home')
     return true
@@ -55,9 +81,10 @@ class LoadingScreen extends React.Component{
 
   async getColumnSizes() {  //Funcion que lee los datos de la Spreadsheet
   const instance=axios.create({
-  timeout:0,
+  timeout:10000,
   headers: {'Authorization': 'Bearer '+this.state.token},
   maxContentLength: 2000000,
+  cancelToken: this.source.token
   })
   var filas=[]
 
@@ -81,6 +108,7 @@ async getData(filas){
   timeout:0,
   headers: {'Authorization': 'Bearer '+this.state.token},
   maxContentLength: Infinity,
+  cancelToken: this.source.token
   })
 
   var aux=[]
@@ -109,6 +137,7 @@ async getData(filas){
   dataReady[0]=1
   check=dataReady.reduce((a, b) => a + b, 0)
   if(check===7){
+    this.unsubscribe();
     this.props.navigation.navigate('expenseMenu', {
       token:this.state.token,
       nombres: nombres, 
@@ -137,6 +166,7 @@ async getData(filas){
     dataReady[1]=1
     check=dataReady.reduce((a, b) => a + b, 0)
     if(check===7){
+    this.unsubscribe();
     this.props.navigation.navigate('expenseMenu',{token: this.state.token, nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores, tipogasto: tipogasto});
   }
 
@@ -157,6 +187,7 @@ instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZL
     dataReady[2]=1
     check=dataReady.reduce((a, b) => a + b, 0)
     if(check===7){
+      this.unsubscribe();
     this.props.navigation.navigate('expenseMenu',{token: this.state.token, nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores, tipogasto: tipogasto});;
   }
 })
@@ -176,6 +207,7 @@ instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZL
     dataReady[3]=1
     check=dataReady.reduce((a, b) => a + b, 0)
     if(check===7){
+      this.unsubscribe();
     this.props.navigation.navigate('expenseMenu',{token: this.state.token, nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores, tipogasto: tipogasto});;
   }
 })
@@ -195,6 +227,7 @@ instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZL
     dataReady[4]=1
     check=dataReady.reduce((a, b) => a + b, 0)
     if(check===7){
+      this.unsubscribe();
     this.props.navigation.navigate('expenseMenu',{token: this.state.token, nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores, tipogasto: tipogasto});;
   }
 })
@@ -214,6 +247,7 @@ instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZL
     dataReady[5]=1
     check=dataReady.reduce((a, b) => a + b, 0)
     if(check===7){
+      this.unsubscribe();
     this.props.navigation.navigate('expenseMenu',{token: this.state.token,  tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores});;
   }
 })
@@ -233,6 +267,7 @@ instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZL
     dataReady[6]=1
     check=dataReady.reduce((a, b) => a + b, 0)
     if(check===7){
+      this.unsubscribe();
     this.props.navigation.navigate('expenseMenu',{token: this.state.token, nombres: nombres, tipodoc:tipodoc, metodos:metodos, categorias:categorias, proyectos:proyectos, proveedores:proveedores, tipogasto: tipogasto});
   }
 })
