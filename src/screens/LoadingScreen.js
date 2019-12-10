@@ -31,8 +31,7 @@ class LoadingScreen extends React.Component{
   
     }
     this.getData=this.getData.bind(this);
-    const unsubscribe = NetInfo.addEventListener(this.connectionChange);
-    this.unsubscribe=unsubscribe  
+    
 	}
 
 
@@ -51,7 +50,8 @@ class LoadingScreen extends React.Component{
       this.props.navigation.navigate('Home')
     }
   });
-
+    const unsubscribe = NetInfo.addEventListener(this.connectionChange);
+    this.unsubscribe = unsubscribe  
     BackHandler.addEventListener('hardwareBackPress',this.backButton)
     
 
@@ -60,7 +60,6 @@ class LoadingScreen extends React.Component{
 
   componentWillUnmount(){
     console.log('unmount')
-    this.source.cancel('Cancel')
     BackHandler.removeEventListener('hardwareBackPress',this.backButton)
     this.unsubscribe();
   }
@@ -76,6 +75,7 @@ class LoadingScreen extends React.Component{
 
   backButton(){
     this.props.navigation.navigate('Home')
+    this.source.cancel('Cancel')
     return true
   }
 
@@ -123,15 +123,13 @@ async getData(filas){
   var check
   instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!A2:A'+filas[0], includeGridData:true }})
 .then(response=>{
-  aux=[]
+  nombres=[]
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
-      aux.push(v[x].values[0].formattedValue)
+      nombres.push(v[x].values[0].formattedValue)
     }
-  aux.sort()
-  for(var x in aux){
-     nombres.push({text: aux[x]})
-  }
+  nombres.sort()
+  nombres.unshift('Nombre')
   console.log(nombres)
 
   dataReady[0]=1
@@ -153,15 +151,13 @@ async getData(filas){
 
   instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!B2:B'+filas[1], includeGridData:true }})
 .then(response=>{
-  aux=[]
+  tipodoc=[]
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
-      aux.push(v[x].values[0].formattedValue)
+      tipodoc.push(v[x].values[0].formattedValue)
     }
-    aux.sort()
-    for(var x in aux){
-     tipodoc.push({text: aux[x]})
-  }
+  tipodoc.sort()
+  tipodoc.unshift('Tipo de Documento')
     console.log(tipodoc)
     dataReady[1]=1
     check=dataReady.reduce((a, b) => a + b, 0)
@@ -174,15 +170,12 @@ async getData(filas){
 
 instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!C2:C'+filas[2], includeGridData:true }})
 .then(response=>{
-  aux=[]
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
-      aux.push(v[x].values[0].formattedValue)
+      categorias.push(v[x].values[0].formattedValue)
     }
-    aux.sort()
-    for(var x in aux){
-     categorias.push({text: aux[x]})
-  }
+  categorias.sort()
+  categorias.unshift('Categoria')
     console.log(categorias)
     dataReady[2]=1
     check=dataReady.reduce((a, b) => a + b, 0)
@@ -194,15 +187,13 @@ instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZL
 
 instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!K2:K'+filas[10], includeGridData:true }})
 .then(response=>{
-  aux=[]
+
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
-      aux.push(v[x].values[0].formattedValue)
+      metodos.push(v[x].values[0].formattedValue)
     }
-    aux.sort()
-    for(var x in aux){
-     metodos.push({text: aux[x]})
-  }
+  metodos.sort()
+  metodos.unshift('Metodo de Pago')
     console.log(metodos)
     dataReady[3]=1
     check=dataReady.reduce((a, b) => a + b, 0)
@@ -214,15 +205,13 @@ instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZL
 
 instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'params!L2:L'+filas[11], includeGridData:true }})
 .then(response=>{
-  aux=[]
+  tipogasto=[]
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
-      aux.push(v[x].values[0].formattedValue)
+      tipogasto.push(v[x].values[0].formattedValue)
     }
-    aux.sort()
-    for(var x in aux){
-     tipogasto.push({text: aux[x]})
-  }
+  tipogasto.sort()
+  tipogasto.unshift('Tipo de Gasto')
     console.log(tipogasto)
     dataReady[4]=1
     check=dataReady.reduce((a, b) => a + b, 0)
@@ -234,15 +223,12 @@ instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZL
 
 instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'Proyectos!B4:B'+filas[3], includeGridData:true }})
 .then(response=>{
-  aux=[]
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
-      aux.push(v[x].values[0].formattedValue)
+      proyectos.push(v[x].values[0].formattedValue)
     }
-    aux.sort()
-    for(var x in aux){
-     proyectos.push({text: aux[x]})
-  }
+  proyectos.sort()
+  proyectos.unshift('Proyecto')
     console.log(proyectos)
     dataReady[5]=1
     check=dataReady.reduce((a, b) => a + b, 0)
@@ -254,15 +240,13 @@ instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZL
 
 instance.get('https://sheets.googleapis.com/v4/spreadsheets/1ffvR3ii1wmgMmjvEwZLIZjmBiY1D8zM8ImJGayT0slA/',{ params: {ranges:'Terceros!B2:B'+filas[4], includeGridData:true }})
 .then(response=>{
-  aux=[]
+  proveedores=[]
   v=response.data.sheets[0].data[0].rowData
   for(var x in v){
-      aux.push(v[x].values[0].formattedValue)
+      proveedores.push(v[x].values[0].formattedValue)
     }
-    aux.sort()
-    for(var x in aux){
-     proveedores.push({text: aux[x]})
-  }
+  proveedores.sort()
+  proveedores.unshift('Proveedor')
     console.log(proveedores)
     dataReady[6]=1
     check=dataReady.reduce((a, b) => a + b, 0)
